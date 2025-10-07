@@ -4,21 +4,28 @@ const postSchema = new Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User", // reference to the user who created the post
+      ref: "User",
       required: true,
     },
     desc: {
       type: String,
-      maxLength: 500, // caption / text content
+      maxLength: 500,
     },
     image: {
-      type: String, // image URL or path
+      type: String,
       default: "",
     },
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "User", // users who liked the post
+        ref: "User",
+      },
+    ],
+    comments: [
+      {
+        user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+        text: { type: String, required: true },
+        createdAt: { type: Date, default: Date.now },
       },
     ],
   },

@@ -2,20 +2,21 @@ import Post from "../../posts/models/index.js";
 // =================Helper for Post Service=================
 
 const createPost = async (postData) => {
-    const post = new Post(postData);
-    await post.save();
-    return post;
+  const post = new Post(postData);
+  await post.save();
+  return post;
 };
 
 const getAllPosts = async () => {
-    const posts = await Post.find({}).populate("user", "name eamil profilePicture")
-                                      .populate("likes", "name email profilePicture")
-                                      .sort({ createdAt: -1 }); // latest posts first
-    return posts; // password will already be stripped out
+  const posts = await Post.find({})
+    .populate("user", "name eamil profilePicture")
+    .populate("likes", "name profilePicture")
+    .sort({ createdAt: -1 }); // latest posts first
+  return posts; // password will already be stripped out
 };
 
 const deleteById = async (id) => {
-return  await Post.findByIdAndDelete(id);
+  return await Post.findByIdAndDelete(id);
 };
 
 const updatedById = async (id, data) => {
@@ -23,13 +24,44 @@ const updatedById = async (id, data) => {
     await Post.findByIdAndUpdate(id, data, { new: true });
   } catch (error) {
     throw new Error("Error updating post: " + error.message);
-  } 
+  }
+};
+
+
+const toggleLike = async (req, res) => {
+  try {
+    const postId = req.params.id;
+    const userId = req.body.userId;
+
+    const post = await Post.findById(postId);
+    if (!post) {
+      return res.status(404).json({ message: "Post not found" });
+    }
+
+    if (post.likes.includes(userId)) {
+      post.likes.pull(userId); // Unlike
+    } else {
+      post.likes.push(userId); // Like
+    }
+
+    await post.save();
+
+    res.status(200).json({
+      message: post.likes.includes(userId) ? "Post liked" : "Post unliked",
+      likesCount: post.likes.length,
+      post,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error toggling like", error });
+  }
 };
 
 export {
-    // ==================Exported Helper for Post Service=================
-    createPost,
-    getAllPosts,
-    deleteById,
-    updatedById
-}
+  // ==================Exported Helper for Post Service=================
+  createPost,
+  getAllPosts,
+  deleteById,
+  updatedById,
+  toggleLike
+
+};
