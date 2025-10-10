@@ -9,7 +9,8 @@ const createUser = async (userData) => {
 
 const getAllData = async () => {
     const users = await User.find({}).populate("followers", "name email profilePicture")
-                                     .populate("following", "name email profilePicture");
+                                     .populate("following", "name email profilePicture")
+                                      .populate("stories"); // populate stories
     return users; // password will already be stripped out
 };
 

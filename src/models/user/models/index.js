@@ -1,5 +1,5 @@
-import { Schema } from "mongoose";
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
+
 const userSchema = new Schema(
   {
     name: {
@@ -23,8 +23,15 @@ const userSchema = new Schema(
       type: String,
       default: "",
     },
-    followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    following: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
+    followers: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+    ],
+    following: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "User" }
+    ],
+    stories: [
+      { type: mongoose.Schema.Types.ObjectId, ref: "Story" } // 👈 reference to stories
+    ],
     isAdmin: {
       type: Boolean,
       default: false,

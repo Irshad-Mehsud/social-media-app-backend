@@ -9,11 +9,17 @@ const createPost = async (postData) => {
 
 const getAllPosts = async () => {
   const posts = await Post.find({})
-    .populate("user", "name eamil profilePicture")
-    .populate("likes", "name profilePicture")
-    .sort({ createdAt: -1 }); // latest posts first
-  return posts; // password will already be stripped out
+    .populate("user", "name email profilePicture") // populate post author
+    .populate("likes", "name profilePicture")      // populate liked users
+    .populate({
+      path: "comments.user",                       // nested populate (inside comments array)
+      select: "name profilePicture",               // only these fields
+    })
+    .sort({ createdAt: -1 }); // latest first
+
+  return posts;
 };
+
 
 const deleteById = async (id) => {
   return await Post.findByIdAndDelete(id);
@@ -56,12 +62,59 @@ const toggleLike = async (req, res) => {
   }
 };
 
+// const commentsById = async (postId, commentData) => {
+//   try {
+//     const post = await Post.findById(postId);
+//     if (!post) {
+//       throw new Error("Post not found");
+//     } 
+//     post.comments.push(commentData);
+//     await post.save();
+//     return post;
+//   } catch (error) {
+//     throw new Error("Error adding comment: " + error.message);
+//   }
+// };
+
+const commentsById = async (postId, commentData) => {
+  try {
+    const post = await Post.findById(postId);
+
+    if (!post) {
+      throw new Error("Post not found");
+    }
+
+    // Ensure commentData has both user and text
+    if (!commentData.user || !commentData.text) {
+      throw new Error("User ID and comment text are required");
+    }
+
+    const newComment = {
+      user: commentData.user,
+      text: commentData.text,
+      createdAt: new Date(),
+    };
+
+    post.comments.push(newComment);
+    await post.save();
+
+    return post;
+  } catch (error) {
+    throw new Error("Error adding comment: " + error.message);
+  }
+};
+
+
+
+
+
 export {
   // ==================Exported Helper for Post Service=================
   createPost,
   getAllPosts,
   deleteById,
   updatedById,
-  toggleLike
+  toggleLike,
+  commentsById,
 
 };
