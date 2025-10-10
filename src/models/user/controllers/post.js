@@ -4,7 +4,8 @@ const postController = async(req, res) => {
         const user = await postData(req.body);  
         res.status(201).json(user);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to create user' });
+        res.status(500).json({ error: error.message });
+        console.error(error);
     }   
 };
 

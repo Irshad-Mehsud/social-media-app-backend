@@ -1,11 +1,53 @@
+import bcrypt from "bcryptjs";
 import User from "../models/index.js";
+import  userValidation  from "../validations/userValidation.js";
 import mongoose from "mongoose";
 
+// const createUser = async (userData) => {
+//     const user = new User(userData);
+//     await user.save();
+//     return user;
+// };
+
 const createUser = async (userData) => {
-    const user = new User(userData);
-    await user.save();
-    return user;
+  // 1️⃣ Validate user input using Joi
+  const { error } = userValidation(userData);
+  if (error) {
+    throw new Error(error.details.map((err) => err.message).join(", "));
+  }
+
+  const { name, email, password, profilePicture, coverPicture } = userData;
+
+  // 2️⃣ Check if user already exists
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    throw new Error("User already exists");
+  }
+
+  // 3️⃣ Hash password before saving
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // 4️⃣ Create a new user instance
+  const user = new User({
+    name,
+    email,
+    password: hashedPassword,
+    profilePicture,
+    coverPicture,
+  });
+
+  // 5️⃣ Save to database
+  await user.save();
+
+  // 6️⃣ Remove password before returning response
+  const userResponse = user.toObject();
+  delete userResponse.password;
+
+  return userResponse;
 };
+
+
+
 
 const getAllData = async () => {
     const users = await User.find({}).populate("followers", "name email profilePicture")
