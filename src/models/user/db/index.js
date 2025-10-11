@@ -1,7 +1,10 @@
 import bcrypt from "bcryptjs";
 import User from "../models/index.js";
 import  userValidation  from "../validations/userValidation.js";
+import jwt from "jsonwebtoken";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+dotenv.config();
 
 // const createUser = async (userData) => {
 //     const user = new User(userData);
@@ -33,7 +36,7 @@ const createUser = async (userData) => {
     email,
     password: hashedPassword,
     profilePicture,
-    coverPicture,
+    coverPicture
   });
 
   // 5️⃣ Save to database
@@ -50,7 +53,7 @@ const createUser = async (userData) => {
 
 
 const getAllData = async () => {
-    const users = await User.find({}).populate("followers", "name email profilePicture")
+    const users = await User.find({}).select("-password").populate("followers", "name email profilePicture")
                                      .populate("following", "name email profilePicture")
                                       .populate("stories"); // populate stories
     return users; // password will already be stripped out
