@@ -31,7 +31,24 @@ const getStories = async () => {
     }
 }
 
+const deleteStoryById = async (id) => {
+    try {
+        const deletedStory = await Story.findByIdAndDelete(id);
+        if (!deletedStory) {
+            throw new Error("Story not found");
+        }
+        // Also remove the story reference from the user's "stories" array
+        await User.findByIdAndUpdate(deletedStory.user, {
+            $pull: { stories: deletedStory._id },
+        });
+        return deletedStory;
+    } catch (error) {
+        throw new Error("Error deleting story: " + error.message);
+    }
+};
+
 export { 
     createStory,
-    getStories 
+    getStories,
+    deleteStoryById 
 };
