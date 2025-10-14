@@ -10,7 +10,14 @@ dotenv.config();
 const app = Express();
 
 app.use(Express.json());
-app.use(Cors());
+// app.use(Cors());
+
+app.use(
+  Cors({
+    origin: "http://localhost:5173", // frontend origin
+    credentials: true,               // allow sending cookies/tokens
+  })
+);
 
 const ENV = process.env;
 

@@ -8,7 +8,7 @@ import { authentication } from "../../helpers/index.js";
 import loginUser from "../user/authcontrollers/login.js";
 const router = Router();
 
-router.post("/", postController);
+router.post("/register", postController);
 router.put("/:id/follow", followUser)
 router.put("/:id/unfollow", unfollowUser)
 router.get("/", authentication, getController)
