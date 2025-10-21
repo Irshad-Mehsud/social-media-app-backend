@@ -59,6 +59,13 @@ const getAllData = async () => {
     return users; // password will already be stripped out
 };
 
+const getUserById = async (id) => {
+    const user = await User.findById(id).select("-password").populate("followers", "name email profilePicture")
+    .populate("following", "name email profilePicture")
+     .populate("stories");
+    return user;
+};
+
 
 
 
@@ -149,6 +156,7 @@ export {
     followUser,
     unfollowUser,
     getAllData,
+    getUserById,
     updattedById,
     deleteById
 }

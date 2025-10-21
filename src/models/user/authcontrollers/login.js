@@ -17,7 +17,7 @@ const loginUser = async (req, res) => {
         }
          const { password: _, ...userData } = user.toObject(); // Exclude password from user data
           const token = jwt.sign(
-                { email: userData.email },
+                 { id: user._id, email: user.email },
                 process.env.JWT_SECRET
             );
     res.status(200).json({

@@ -1,12 +1,23 @@
 import Post from "../../posts/models/index.js";
+import mongoose from "mongoose";
 // =================Helper for Post Service=================
 
-const createPost = async (postData) => {
-  const post = new Post(postData);
+const createPost = async (data) => {
+  const { user, desc, image } = data;
+  console.log("Creating post with data:", data);
+  if (!user || !desc) {
+    throw new Error("User ID and description are required.");
+  }
+
+  const post = new Post({
+    user:new mongoose.Types.ObjectId(user),       // matches schema
+    desc: desc,  // matches schema
+    image: image || "",
+  });
+
   await post.save();
   return post;
 };
-
 const getAllPosts = async () => {
   const posts = await Post.find({})
     .populate("user", "name email profilePicture") // populate post author

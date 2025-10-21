@@ -10,7 +10,7 @@ const router = Router();
 
 
 router.use("/auth",userRoutes)
-router.use("/post",postRoutes)
+router.use("/posts",postRoutes)
 router.use("/story",storyRoutes)
 router.use("/upload",uploadRoutes)
 

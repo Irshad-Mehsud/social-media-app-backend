@@ -1,6 +1,14 @@
-import { getAllData } from "../db/index.js";
-const getData = () => {
-return getAllData();
+import { getAllData, getUserById } from "../db/index.js";
+const getData = async () => {
+    const users = await getAllData();
+    return users;
 };
 
-export default getData;
+const getDataById = async (userId) => {
+  const userData = await getUserById(userId);
+  return userData;
+}
+export {
+    getData,
+    getDataById
+}
