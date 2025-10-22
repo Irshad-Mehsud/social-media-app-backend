@@ -26,3 +26,6 @@ temp/
 # OS files
 .DS_Store
 Thumbs.db
+# Allow dist folder for deployment
+!dist/
+
