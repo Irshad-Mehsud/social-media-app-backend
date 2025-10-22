@@ -1,16 +1,13 @@
 {
   "name": "back-end",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "type": "module",
-    "start": "node index.js"
+    "dev": "nodemon index.js",
+    "build": "babel src --out-dir dist",
+    "start": "NODE_ENV=production node dist/index.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "chalk": "^5.6.2",
@@ -27,6 +24,9 @@
     "sharp": "^0.34.4"
   },
   "devDependencies": {
+    "@babel/cli": "^7.26.0",
+    "@babel/core": "^7.26.0",
+    "@babel/preset-env": "^7.26.0",
     "nodemon": "^3.1.10"
   }
 }
