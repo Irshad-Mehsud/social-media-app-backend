@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import chalk from "chalk";
 import serverless from "serverless-http";
+// import routes from "./src/routes/index.js";
 import routes from "./src/routes/index.js";
 
 dotenv.config();

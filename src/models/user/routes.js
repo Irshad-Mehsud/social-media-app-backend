@@ -9,8 +9,8 @@ import loginUser from "../user/authcontrollers/login.js";
 const router = Router();
 
 router.post("/register", postController);
-router.put("/:id/follow", followUser)
-router.put("/:id/unfollow", unfollowUser)
+router.put("/:id/follow", authentication, followUser)
+router.put("/:id/unfollow", authentication, unfollowUser)
 router.get("/", authentication, getController)
 router.get("/me", authentication, getCurrentUser)
 router.put("/:id", updateController)

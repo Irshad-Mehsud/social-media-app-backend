@@ -72,9 +72,8 @@ const getUserById = async (id) => {
 // follow user
 const followUser = async (req, res) => {
   try {
-   const currentUserId = req.body.id;   // the user who follows
-   const targetUserId = req.params.id;  // the user to be followed
-
+    const currentUserId = req.body.id; // matches frontend
+    const targetUserId = req.params.id;
 
     // console.log(currentUserId, targetUserId);
 
