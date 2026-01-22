@@ -22,6 +22,11 @@ app.use(
 
 const ENV = process.env;
 
+if (!ENV.DB_USER || !ENV.DB_PASSWORD || !ENV.DB_NAME) {
+  console.error(chalk.red.bold("ERROR: Missing MongoDB environment variables (DB_USER, DB_PASSWORD, or DB_NAME)."));
+  console.error("Please set these in your .env file (locally) or Vercel Project Settings (production).");
+}
+
 mongoose
   .connect(
     `mongodb+srv://${ENV.DB_USER}:${ENV.DB_PASSWORD}@irshadcluster.w5dqwxs.mongodb.net/${ENV.DB_NAME}?retryWrites=true&w=majority&appName=IrshadCluster`
