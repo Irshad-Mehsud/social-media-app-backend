@@ -17,9 +17,14 @@ var postSchema = new _mongoose.Schema({
     type: String,
     maxLength: 500
   },
-  image: {
+  mediaUrl: {
     type: String,
-    "default": ""
+    required: true
+  },
+  mediaType: {
+    type: String,
+    "enum": ["image", "video"],
+    required: true
   },
   likes: [{
     type: _mongoose["default"].Schema.Types.ObjectId,

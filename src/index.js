@@ -5,9 +5,9 @@ import dotenv from "dotenv";
 import chalk from "chalk";
 import serverless from "serverless-http";
 // import routes from "./src/routes/index.js";
-import routes from "./src/routes/index.js";
+import routes from "./routes/index.js";
 
-dotenv.config();
+dotenv.config(); // Make sure this is at the top
 
 const app = express();
 
@@ -36,6 +36,7 @@ app.get("/", (req, res) => {
 });
 
 // ✅ Export for Vercel serverless function
+// export default app;
 export const handler = serverless(app);
 
 // ✅ Local server (only runs locally, not on Vercel)

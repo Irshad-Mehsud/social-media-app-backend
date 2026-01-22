@@ -7,20 +7,30 @@ const postSchema = new Schema(
       ref: "User",
       required: true,
     },
+
     desc: {
       type: String,
       maxLength: 500,
     },
-    image: {
-      type: String,
-      default: "",
+
+    mediaUrl: { 
+      type: String, 
+      required: true, 
     },
+
+    mediaType: {
+      type: String,
+      enum: ["image", "video"],
+      required: true,
+    },
+
     likes: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
       },
     ],
+
     comments: [
       {
         user: { type: mongoose.Schema.Types.ObjectId, ref: "User" },

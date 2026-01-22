@@ -12,7 +12,7 @@ router.post("/register", postController);
 router.put("/:id/follow", authentication, followUser)
 router.put("/:id/unfollow", authentication, unfollowUser)
 router.get("/", authentication, getController)
-router.get("/me", authentication, getCurrentUser)
+router.get("/:id", authentication, getCurrentUser)
 router.put("/:id", updateController)
 router.delete("/:id", deleteController);
 router.post("/login", loginUser);

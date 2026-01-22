@@ -14,5 +14,5 @@ var upload = (0, _multer["default"])({
   dest: "src/modules/uploads/files/"
 });
 // Destination folder for uploaded files
-router.post("/", upload.single("image"), _upload["default"]);
+router.post("/", upload.single("file"), _upload["default"]);
 var _default = exports["default"] = router;

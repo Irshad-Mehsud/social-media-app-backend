@@ -3,16 +3,17 @@ import mongoose from "mongoose";
 // =================Helper for Post Service=================
 
 const createPost = async (data) => {
-  const { user, desc, image } = data;
+  const { user, desc, mediaUrl, mediaType } = data;
   console.log("Creating post with data:", data);
-  if (!user || !desc) {
-    throw new Error("User ID and description are required.");
+  if (!user || !desc || !mediaUrl || !mediaType) {
+    throw new Error("User ID, description, mediaUrl, and mediaType are required.");
   }
 
   const post = new Post({
     user:new mongoose.Types.ObjectId(user),       // matches schema
     desc: desc,  // matches schema
-    image: image || "",
+    mediaUrl: mediaUrl,
+    mediaType: mediaType,
   });
 
   await post.save();
@@ -55,7 +56,10 @@ const toggleLike = async (req, res) => {
       return res.status(404).json({ message: "Post not found" });
     }
 
-    if (post.likes.includes(userId)) {
+    // Check if user already liked the post
+    const isLiked = post.likes.map(id => id.toString()).includes(userId);
+
+    if (isLiked) {
       post.likes.pull(userId); // Unlike
     } else {
       post.likes.push(userId); // Like
@@ -63,12 +67,19 @@ const toggleLike = async (req, res) => {
 
     await post.save();
 
+    // Populate likes with user info for frontend
+    const updatedPost = await Post.findById(postId).populate(
+      "likes",
+      "_id name profilePicture"
+    );
+
     res.status(200).json({
-      message: post.likes.includes(userId) ? "Post liked" : "Post unliked",
-      likesCount: post.likes.length,
-      post,
+      liked: !isLiked,
+      likesCount: updatedPost.likes.length,
+      post: updatedPost,
     });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: "Error toggling like", error });
   }
 };

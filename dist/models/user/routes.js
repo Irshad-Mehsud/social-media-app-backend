@@ -15,10 +15,10 @@ var _login = _interopRequireDefault(require("../user/authcontrollers/login.js"))
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { "default": e }; }
 var router = (0, _express.Router)();
 router.post("/register", _post["default"]);
-router.put("/:id/follow", _index.followUser);
-router.put("/:id/unfollow", _index.unfollowUser);
+router.put("/:id/follow", _index2.authentication, _index.followUser);
+router.put("/:id/unfollow", _index2.authentication, _index.unfollowUser);
 router.get("/", _index2.authentication, _get.getController);
-router.get("/me", _index2.authentication, _get.getCurrentUser);
+router.get("/:id", _index2.authentication, _get.getCurrentUser);
 router.put("/:id", _update["default"]);
 router["delete"]("/:id", _delete["default"]);
 router.post("/login", _login["default"]);

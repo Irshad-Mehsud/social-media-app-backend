@@ -4,9 +4,9 @@
   "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon index.js",
+    "dev": "nodemon src/index.js",
     "build": "babel src --out-dir dist",
-    "postbuild": "npx copyfiles index.js dist",
+    "postbuild": "node create-dist-config.js",
     "start": "node dist/index.js"
   },
   "dependencies": {
@@ -16,6 +16,7 @@
     "cors": "^2.8.5",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
+    "file-type": "^21.1.1",
     "fs-extra": "^11.3.2",
     "joi": "^18.0.1",
     "jsonwebtoken": "^9.0.2",

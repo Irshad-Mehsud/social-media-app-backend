@@ -15,9 +15,30 @@ var uploadFile = /*#__PURE__*/function () {
     return _regenerator().w(function (_context) {
       while (1) switch (_context.n) {
         case 0:
-          _context.n = 1;
-          return (0, _cloudinary["default"])(fileObj.path, fileObj.mimetype);
+          if (fileObj) {
+            _context.n = 1;
+            break;
+          }
+          throw new Error("File object is required");
         case 1:
+          if (fileObj.path) {
+            _context.n = 2;
+            break;
+          }
+          throw new Error("File path is missing from file object");
+        case 2:
+          if (fileObj.mimetype) {
+            _context.n = 3;
+            break;
+          }
+          throw new Error("File mimetype is missing from file object");
+        case 3:
+          console.log("Service received file object:", fileObj);
+          console.log("File path:", fileObj.path);
+          console.log("File mimetype:", fileObj.mimetype);
+          _context.n = 4;
+          return (0, _cloudinary["default"])(fileObj.path, fileObj.mimetype);
+        case 4:
           return _context.a(2, _context.v);
       }
     }, _callee);

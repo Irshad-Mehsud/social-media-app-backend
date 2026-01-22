@@ -123,9 +123,8 @@ var followUser = exports.followUser = /*#__PURE__*/function () {
       while (1) switch (_context4.p = _context4.n) {
         case 0:
           _context4.p = 0;
-          currentUserId = req.body.id; // the user who follows
-          targetUserId = req.params.id; // the user to be followed
-          // console.log(currentUserId, targetUserId);
+          currentUserId = req.body.id; // matches frontend
+          targetUserId = req.params.id; // console.log(currentUserId, targetUserId);
           if (!(currentUserId === targetUserId)) {
             _context4.n = 1;
             break;

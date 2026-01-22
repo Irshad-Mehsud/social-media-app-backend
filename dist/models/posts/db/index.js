@@ -15,24 +15,25 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
 
 var createPost = exports.createPost = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee(data) {
-    var user, desc, image, post;
+    var user, desc, mediaUrl, mediaType, post;
     return _regenerator().w(function (_context) {
       while (1) switch (_context.n) {
         case 0:
-          user = data.user, desc = data.desc, image = data.image;
+          user = data.user, desc = data.desc, mediaUrl = data.mediaUrl, mediaType = data.mediaType;
           console.log("Creating post with data:", data);
-          if (!(!user || !desc)) {
+          if (!(!user || !desc || !mediaUrl || !mediaType)) {
             _context.n = 1;
             break;
           }
-          throw new Error("User ID and description are required.");
+          throw new Error("User ID, description, mediaUrl, and mediaType are required.");
         case 1:
           post = new _index["default"]({
             user: new _mongoose["default"].Types.ObjectId(user),
             // matches schema
             desc: desc,
             // matches schema
-            image: image || ""
+            mediaUrl: mediaUrl,
+            mediaType: mediaType
           });
           _context.n = 2;
           return post.save();
@@ -116,7 +117,7 @@ var updatedById = exports.updatedById = /*#__PURE__*/function () {
 }();
 var toggleLike = exports.toggleLike = /*#__PURE__*/function () {
   var _ref5 = _asyncToGenerator(/*#__PURE__*/_regenerator().m(function _callee5(req, res) {
-    var postId, userId, post, _t2;
+    var postId, userId, post, isLiked, updatedPost, _t2;
     return _regenerator().w(function (_context5) {
       while (1) switch (_context5.p = _context5.n) {
         case 0:
@@ -135,7 +136,11 @@ var toggleLike = exports.toggleLike = /*#__PURE__*/function () {
             message: "Post not found"
           }));
         case 2:
-          if (post.likes.includes(userId)) {
+          // Check if user already liked the post
+          isLiked = post.likes.map(function (id) {
+            return id.toString();
+          }).includes(userId);
+          if (isLiked) {
             post.likes.pull(userId); // Unlike
           } else {
             post.likes.push(userId); // Like
@@ -143,24 +148,29 @@ var toggleLike = exports.toggleLike = /*#__PURE__*/function () {
           _context5.n = 3;
           return post.save();
         case 3:
-          res.status(200).json({
-            message: post.likes.includes(userId) ? "Post liked" : "Post unliked",
-            likesCount: post.likes.length,
-            post: post
-          });
-          _context5.n = 5;
-          break;
+          _context5.n = 4;
+          return _index["default"].findById(postId).populate("likes", "_id name profilePicture");
         case 4:
-          _context5.p = 4;
+          updatedPost = _context5.v;
+          res.status(200).json({
+            liked: !isLiked,
+            likesCount: updatedPost.likes.length,
+            post: updatedPost
+          });
+          _context5.n = 6;
+          break;
+        case 5:
+          _context5.p = 5;
           _t2 = _context5.v;
+          console.error(_t2);
           res.status(500).json({
             message: "Error toggling like",
             error: _t2
           });
-        case 5:
+        case 6:
           return _context5.a(2);
       }
-    }, _callee5, null, [[0, 4]]);
+    }, _callee5, null, [[0, 5]]);
   }));
   return function toggleLike(_x5, _x6) {
     return _ref5.apply(this, arguments);
