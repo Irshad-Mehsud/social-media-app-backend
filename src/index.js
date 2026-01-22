@@ -7,7 +7,9 @@ import chalk from "chalk";
 // import routes from "./src/routes/index.js";
 import routes from "./routes/index.js";
 
-dotenv.config(); // Make sure this is at the top
+if (process.env.NODE_ENV !== "production") {
+  dotenv.config();
+}
 
 const app = express();
 
