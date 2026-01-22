@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import cors from "cors";
 import dotenv from "dotenv";
 import chalk from "chalk";
-import serverless from "serverless-http";
+// import serverless from "serverless-http";
 // import routes from "./src/routes/index.js";
 import routes from "./routes/index.js";
 
@@ -40,10 +40,8 @@ app.get("/", (req, res) => {
   res.send("Backend is running successfully!");
 });
 
-// ✅ Export for Vercel serverless function
-const handler = serverless(app);
-export { handler };
-export default handler;
+// ✅ Export for Vercel serverless function (Vercel handles Express natively)
+export default app;
 
 // ✅ Local server (only runs locally, not on Vercel)
 if (process.env.NODE_ENV !== "production") {
