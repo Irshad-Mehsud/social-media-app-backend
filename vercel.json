@@ -1,7 +1,16 @@
 {
-  "version": 2,
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/api/index.js" }
-  ],
-  "ignoreCommand": "echo 'Skipping build step'" 
+ "version": 2,
+ "builds": [
+  {
+   "src": "index.js",
+   "use": "@vercel/node",
+   "config": { "includeFiles": ["dist/**"] }
+  }
+ ],
+ "routes": [
+  {
+   "src": "/(.*)",
+   "dest": "index.js"
+  }
+ ]
 }
